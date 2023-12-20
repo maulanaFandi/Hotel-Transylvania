@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "roomNumber": 1,
+        "price": 2000000,
+        "imgUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/cd/45/6b/hotel-vintage.jpg?w=1200&h=-1&s=1",
+        "roomType": "VIP"
+    },
+    {
+        "id": 2,
+        "roomNumber": 2,
+        "price": 500000,
+        "imgUrl": "https://images.trvl-media.com/lodging/16000000/15100000/15093800/15093795/004dec39.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+        "roomType": "Business"
+    },
+    {
+        "id": 3,
+        "roomNumber": 3,
+        "price": 3000000,
+        "imgUrl": "https://img.inews.co.id/media/822/files/inews_new/2018/09/12/the_loren.jpg",
+        "roomType": "VIP"
+    },
+    {
+        "id": 4,
+        "roomNumber": 4,
+        "price": 300000,
+        "imgUrl": "https://cdn-2.tstatic.net/medan/foto/bank/images/slum3_20150602_195046.jpg",
+        "roomType": "Economy"
+    }
+]

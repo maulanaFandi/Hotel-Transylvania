@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hotel Transylvania</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous" />
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <form action="/admin/add" method="post">
+        <div>
+          <h1>Add new Room</h1>
+        </div>
+         
+        
+        <div>
+          <span class="input-group-text">Room Number</span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            name="roomNumber" />
+        </div>
+        <div>
+          <span class="input-group-text">Price</span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            name="price" />
+        </div>
+        <div>
+          <span class="input-group-text">Image</span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            name="imgUrl" />
+        </div>
+        <div>
+            <p>Room Type</p>
+            <select name="roomType">
+                <option value="Economy">Economy</option>
+                <option value="Bussiness">Bussiness</option>
+                <option value="VIP">VIP</option>
+            </select>
+        </div>
+        
+
+        <br />
+        <br />
+        <button type="submit" class="btn btn-primary">Add Room</button>
+      </form>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"></script>
+  </body>
+</html>

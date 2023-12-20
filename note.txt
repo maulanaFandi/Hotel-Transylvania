@@ -1,0 +1,14 @@
+npx sequelize model:generate --name Admin --attributes username:string,passqord:string
+
+npx sequelize model:generate --name Profile --attributes name:string,age:integer,address:string,phoneNumber:integer
+
+npx sequelize migration:create --name role
+
+npx sequelize seed:create --name transaction
+
+npx sequelize seed:create --name employee
+name, age, address, phoneNumber
+
+
+
+

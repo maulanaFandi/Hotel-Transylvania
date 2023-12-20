@@ -1,0 +1,70 @@
+<%- include('./admin/header') %>
+
+<style>
+    body {
+      background-color: #f8f9fa;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #007bff;
+    }
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    td {
+      text-align: center;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <br><br><br>
+
+  <div class="container-fluid">
+    <form class="d-flex" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+
+  <div class="container" >
+    <h1>Hotel Room Listings</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Room Number</th>
+          <th scope="col">Price</th>
+          <th scope="col">Room Type</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% result.forEach(el => {%>
+            
+            <tr>
+                <td><img src="<%=el.imgUrl %>" alt="Photo" style="max-width: 100px;"></td>
+                <td><%=el.roomNumber %></td>
+                <td><%=el.price %></td>
+                <td><%=el.roomType %></td>
+                <td>
+                    <a href="#" class="btn btn-success">Booked</a>
+                    <a href="/admin/<%= el.id  %>/edit" class="btn btn-primary">Edit Room</a>
+                    <a href="/admin/<%= el.id  %>/delete" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            <%});%>
+      </tbody>
+    </table>
+  </div>
+
+<%- include('./admin/footer') %>
