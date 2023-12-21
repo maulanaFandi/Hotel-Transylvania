@@ -6,11 +6,11 @@ const bcryptjs = require("bcryptjs");
 const Helper = require("../helpers/helper");
 
 class ControllerAdmin {
-
   static async loginAdmin(req, res) {
     try {
-      let errors = Helper.getErrors(req.query)
-      res.render("loginFormAdmin", {errors});
+      let errors = Helper.getErrors
+
+      res.render("loginFormAdmin", { errors });
     } catch (error) {
       res.send(error.message);
     }
@@ -23,7 +23,7 @@ class ControllerAdmin {
         where: {
           email: email,
         },
-      });      
+      });
       if (!data) {
         res.redirect("/login?/err=email invalid");
       }
@@ -35,27 +35,31 @@ class ControllerAdmin {
         res.redirect("/login?error=email invalid");
       }
     } catch (error) {
-      Helper.setErrors(res, error, "/login");
-      res.send(error.message);
+      if (error?.name === "SequelizeValidationError") {
+        error = error.errors.map((item) => {
+          return item.message;
+        });
+        res.redirect(`/login?errors=${error}`);
+      } else {
+        res.send(error);
+      }
     }
   }
 
   static async adminPage(req, res) {
     try {
       let errors = Helper.getErrors(req.query);
-      let {search} = req.query
+      let { search } = req.query;
       let where = {};
-      
+
       if (search) {
         where = {
-            name: { [Op.iLike]: `%${search}%` }
+          name: { [Op.iLike]: `%${search}%` },
         };
       }
 
       let result = await Room.findAll({
-        order: [
-            ['roomNumber', 'ASC'],
-        ]
+        order: [["roomNumber", "ASC"]],
       });
       res.render("adminPage", { result, errors });
     } catch (error) {
@@ -66,8 +70,14 @@ class ControllerAdmin {
   static async roomAdd(req, res) {
     // room id
     try {
-      let errors = Helper.getErrors(req.query);
-        res.render("addRoom", {errors})
+      let { errors } = query;
+      if (!errors) {
+        errors = [];
+      } else {
+        errors = errors.split(",");
+      }
+
+      res.render("addRoom", { errors });
     } catch (error) {
       res.send(error.message);
     }
@@ -75,33 +85,53 @@ class ControllerAdmin {
 
   static async roomAddPost(req, res) {
     try {
-        await Room.create({
-            roomNumber: req.body.roomNumber,
-            price: req.body.price,
-            imgUrl: req.body.imgUrl,
-            roomType: req.body.roomType,
-            StatusId: req.body.StatusId
-        })
+      await Room.create({
+        roomNumber: req.body.roomNumber,
+        price: req.body.price,
+        imgUrl: req.body.imgUrl,
+        roomType: req.body.roomType,
+        StatusId: req.body.StatusId,
+      });
       res.redirect("/admin");
     } catch (error) {
-      Helper.setErrors(res, error, "/admin/add" )
-      res.send(error.message);
+      if (error?.name === "SequelizeValidationError") {
+        error = error.errors.map((item) => {
+          return item.message;
+        });
+        res.redirect(`/admin/add?errors=${error}`);
+      } else {
+        res.send(error);
+      }
     }
   }
 
   static async roomIdEdit(req, res) {
     // room i edit
     try {
-      let errors = Helper.getErrors(req.query);
+      let { errors } = query;
+      if (!errors) {
+        errors = [];
+      } else {
+        errors = errors.split(",");
+      }
+
       const { id } = req.params;
       let result = await Room.findOne({
         where: {
-          id
+          id,
         },
       });
       res.render("editRoom", { result, errors });
     } catch (error) {
-      res.send(error.message);
+      const { id } = req.params;
+      if (error?.name === "SequelizeValidationError") {
+        error = error.errors.map((item) => {
+          return item.message;
+        });
+        res.redirect(`/admin/${id}/edit?errors=${error}`);
+      } else {
+        res.send(error);
+      }
     }
   }
 
@@ -109,16 +139,26 @@ class ControllerAdmin {
     // room i edit post
     try {
       const { id } = req.params;
-        await Room.update({
-            roomNumber: req.body.roomNumber,
-            price: req.body.price,
-            imgUrl: req.body.imgUrl,
-            roomType: req.body.roomType,
-        },{where: {id}})
+      await Room.update(
+        {
+          roomNumber: req.body.roomNumber,
+          price: req.body.price,
+          imgUrl: req.body.imgUrl,
+          roomType: req.body.roomType,
+        },
+        { where: { id } }
+      );
       res.redirect("/admin");
     } catch (error) {
-      Helper.setErrors(res, error, "/admin/edit")
-      res.send(error.message);
+      const { id } = req.params;
+      if (error?.name === "SequelizeValidationError") {
+        error = error.errors.map((item) => {
+          return item.message;
+        });
+        res.redirect(`/admin/${id}/edit?errors=${error}`);
+      } else {
+        res.send(error);
+      }
     }
   }
 
@@ -133,19 +173,17 @@ class ControllerAdmin {
     }
   }
 
-  static async logoutAdmin(req, res){
+  static async logoutAdmin(req, res) {
     try {
-        req.session.destroy((err) => {
-            if (err){
-                console.log(err)
-            } else {
-                res.redirect("/")
-            }
-        })
-    } catch (error) {
-        
-    }
-}
+      req.session.destroy((err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect("/");
+        }
+      });
+    } catch (error) {}
+  }
 }
 
 module.exports = ControllerAdmin;
