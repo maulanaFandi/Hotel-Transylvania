@@ -22,9 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: "UserId"
       // })
 
-      User.belongsTo(models.Profile)
+      // User.belongsTo(models.Profile)
+      User.hasMany(models.Profile, {
+        foreignKey: "UserId"
+    })
     }
-
     get balanceRupiahFormat() {
       return Helper.currencyFormat(this.balance);
   }
@@ -77,8 +79,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeCreate(async (user, options) => {
     user.password = Helper.generatePassword(user.password);
-    user.role = 2;
-    user.balance = 0;
+    // user.role = 2;
+    // user.balance = 0;
 });
 
   return User;
