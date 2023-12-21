@@ -26,16 +26,10 @@ class Controller {
 
  static async register(req, res) {
     try {
-      let { errors } = req.query;
-      if (!errors) {
-        errors = [];
-      } else {
-        errors = errors.split(",");
-      }
-
+      let errors = Helper.getErrors(req.query)
       res.render("registForm", {errors});
     } catch (error) {
-      res.send(error);
+      res.send(error.message);
     }
  }
 
