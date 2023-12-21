@@ -6,10 +6,10 @@ const bcryptjs = require("bcryptjs");
 const Helper = require("../helpers/helper");
 
 class ControllerAdmin {
-
   static async loginAdmin(req, res) {
     try {
       res.render("loginFormAdmin");
+
     } catch (error) {
       res.send(error.message);
     }
@@ -23,7 +23,7 @@ class ControllerAdmin {
         where: {
           email: email,
         },
-      });  
+      });
       if (!data) {
         res.redirect("/login?/err=email invalid");
       }
@@ -36,6 +36,7 @@ class ControllerAdmin {
       }
     } catch (error) {
       res.send(error.message);
+
     }
   }
 
@@ -50,18 +51,17 @@ class ControllerAdmin {
         res.redirect('/login')
       }
       let {search} = req.query
+
       let where = {};
-      
+
       if (search) {
         where = {
-            name: { [Op.iLike]: `%${search}%` }
+          name: { [Op.iLike]: `%${search}%` },
         };
       }
 
       let result = await Room.findAll({
-        order: [
-            ['roomNumber', 'ASC'],
-        ]
+        order: [["roomNumber", "ASC"]],
       });
       res.render("adminPage", { result });
     } catch (error) {
@@ -73,6 +73,7 @@ class ControllerAdmin {
     // room id
     try {
         res.render("addRoom")
+
     } catch (error) {
       res.send(error.message);
     }
@@ -80,31 +81,41 @@ class ControllerAdmin {
 
   static async roomAddPost(req, res) {
     try {
-        await Room.create({
-            roomNumber: req.body.roomNumber,
-            price: req.body.price,
-            imgUrl: req.body.imgUrl,
-            roomType: req.body.roomType,
-            StatusId: req.body.StatusId
-        })
+      await Room.create({
+        roomNumber: req.body.roomNumber,
+        price: req.body.price,
+        imgUrl: req.body.imgUrl,
+        roomType: req.body.roomType,
+        StatusId: req.body.StatusId,
+      });
       res.redirect("/admin");
     } catch (error) {
       res.send(error.message);
+
     }
   }
 
   static async roomIdEdit(req, res) {
     // room i edit
     try {
+
       const { id } = req.params;
       let result = await Room.findOne({
         where: {
-          id
+          id,
         },
       });
       res.render("editRoom", { result });
     } catch (error) {
-      res.send(error.message);
+      const { id } = req.params;
+      if (error?.name === "SequelizeValidationError") {
+        error = error.errors.map((item) => {
+          return item.message;
+        });
+        res.redirect(`/admin/${id}/edit?errors=${error}`);
+      } else {
+        res.send(error);
+      }
     }
   }
 
@@ -112,15 +123,19 @@ class ControllerAdmin {
     // room i edit post
     try {
       const { id } = req.params;
-        await Room.update({
-            roomNumber: req.body.roomNumber,
-            price: req.body.price,
-            imgUrl: req.body.imgUrl,
-            roomType: req.body.roomType,
-        },{where: {id}})
+      await Room.update(
+        {
+          roomNumber: req.body.roomNumber,
+          price: req.body.price,
+          imgUrl: req.body.imgUrl,
+          roomType: req.body.roomType,
+        },
+        { where: { id } }
+      );
       res.redirect("/admin");
     } catch (error) {
       res.send(error.message);
+
     }
   }
 
@@ -135,20 +150,17 @@ class ControllerAdmin {
     }
   }
 
-  static async logoutAdmin(req, res){
+  static async logoutAdmin(req, res) {
     try {
-      console.log(`ini adalah session ${req.session.role}`);
-        req.session.destroy((err) => {
-            if (err){
-                console.log(err)
-            } else {
-                res.redirect("/")
-            }
-        })
-    } catch (error) {
-        
-    }
-}
+      req.session.destroy((err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect("/");
+        }
+      });
+    } catch (error) {}
+  }
 }
 
 module.exports = ControllerAdmin;

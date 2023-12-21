@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer');
 
 class Controller {
 
+
   static async maintenance(req, res) {
     try {
       res.render("./index/maintenance");
@@ -19,11 +20,10 @@ class Controller {
 
   static async home(req, res) {
     try {
-      console.log(req.session.role);
       let result = await Room.findAll()
       res.render('landingPage', { result })
     } catch (error) {
-      res.send(error.message)
+      res.send(error.message);
     }
   }
 
@@ -84,7 +84,10 @@ class Controller {
         peran+='Admin'
       } else{
         peran+='User'
+
       }
+    }
+  }
 
       async function sendEmail() {
         try {
@@ -111,3 +114,4 @@ sendEmail();
 }
 
 module.exports = Controller
+
