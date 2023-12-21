@@ -79,12 +79,11 @@ class Controller {
           rejectUnauthorized: false
         }
       });
-
       let peran = ''
-      if (role === '1') {
-        peran += 'Admin'
-      } else {
-        peran += 'User'
+      if(role==='1'){
+        peran+='Admin'
+      } else{
+        peran+='User'
       }
 
       async function sendEmail() {
@@ -101,7 +100,7 @@ class Controller {
           console.error('Error sending email:', error);
         }
       }
-      sendEmail();
+sendEmail();
 
       res.redirect("/login");
     } catch (error) {
@@ -112,4 +111,3 @@ class Controller {
 }
 
 module.exports = Controller
-
