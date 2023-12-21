@@ -24,7 +24,7 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING,
       },
-      UserProfileId: {
+      UserId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Users",

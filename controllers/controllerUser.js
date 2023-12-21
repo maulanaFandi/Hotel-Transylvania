@@ -31,10 +31,11 @@ class ControllerUser {
         res.redirect("/login?error=email invalid");
       }
 
-      let user = bcryptjs.compareSync(password, data.password);
+      let user = bcryptjs.compareSync(password, dataUser.password);
       if (user) {
         req.session.role = dataUser.role;
-        res.render("/users");
+        res.redirect("/users");
+
       } else {
         res.redirect("/login?error=email invalid");
       }
@@ -47,6 +48,7 @@ class ControllerUser {
   static async showAllRooms(req, res) {
     // menampilkan semua rooms
     try {
+      console.log(`ini adalah session ${req.session.role}`);
       const result = await Room.findAll({
         where: {
           StatusId: 2,

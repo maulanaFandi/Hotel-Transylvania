@@ -20,5 +20,7 @@ router.post("/register", Controller.registerPost);
 
 router.get("/404", Controller.maintenance);
 
+router.post("/register", Controller.registerPost);
+
 
 module.exports = router;

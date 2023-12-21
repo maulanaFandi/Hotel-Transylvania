@@ -17,6 +17,7 @@ class Controller{
 
   static async home(req, res){
     try {
+      console.log(req.session.role);
       let result = await Room.findAll()
       res.render('landingPage', {result})
     } catch (error) {
@@ -44,13 +45,16 @@ class Controller{
         // post add
         try {
 
-          // let { email, password, role } = req.body;
-
+          let { email, password, role } = req.body;
+          console.log(req.body);
           // let users = await User.findOne({
           //   where: {
           //     email: email,
           //   },
           // });
+
+          let users = await User.findOne();
+          console.log(req.body);
 
           // if (users) {
           //   throw { name: "validation", errors: ["Email Already Registered"] };
@@ -61,25 +65,26 @@ class Controller{
             password: req.body.password,
             role: req.body.role,
           });
-    
+
           await Profile.create({
             name: req.body.name,
             age: req.body.age,
             address: req.body.address,
             phoneNumber: req.body.phoneNumber,
-            UserProfileId: user.dataValues.id,
+            UserId: user.id,
           });
 
-        //   const transporter = nodemailer.createTransport({
-        //     service: 'gmail',
-        //     auth: {
-        //       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-        //       user: "maulana27fandi@gmail.com",
-        //       pass: "osjk ngak kkep ikfl"
-        //     },
-        //   });
+          // const transporter = nodemailer.createTransport({
+          //   service: 'gmail',
+          //   auth: {
+          //     // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+          //     user: "maulana27fandi@gmail.com",
+          //     pass: "osjk ngak kkep ikfl"
+          //   },
+          // });
     
-        // // send mail with defined transport object
+        // send mail with defined transport object
+
         // await transporter.sendMail({
         //   from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
         //   to: "muhammadsubhantarmedi@gmail.com", // list of receivers
