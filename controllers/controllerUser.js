@@ -10,7 +10,8 @@ class ControllerUser {
   static async loginUser(req, res) {
     // login user
     try {
-      res.render("loginFormUser");
+      let errors = Helper.getErrors(req.query)
+      res.render("loginFormUser", {errors});
     } catch (error) {
       console.log(error);
       res.send(error);
@@ -28,7 +29,7 @@ class ControllerUser {
       });
 
       if (!dataUser) {
-        res.redirect("/login?error=email invalid");
+        res.redirect("/users/login?error=email invalid");
       }
 
       let user = bcryptjs.compareSync(password, dataUser.password);
@@ -37,11 +38,10 @@ class ControllerUser {
         res.redirect("/users");
 
       } else {
-        res.redirect("/login?error=email invalid");
+        res.redirect("/users/login?error=email invalid");
       }
     } catch (error) {
-      console.log(error);
-      res.send(error);
+      Helper.setErrors(res, error, '/users/login')
     }
   }
 
@@ -49,9 +49,6 @@ class ControllerUser {
     // menampilkan semua rooms
     try {
       const result = await Room.findAll({
-        where: {
-          StatusId: 2,
-        },
         order: [["id", "ASC"]],
       });
       res.render("userPage", { result });

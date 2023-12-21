@@ -4,26 +4,27 @@ const user = require("../models/user");
 const admin = require("../routers/admin");
 const bcryptjs = require("bcryptjs");
 const Helper = require("../helpers/helper");
+const nodemailer = require('nodemailer');
 
 class Controller {
-  static async maintenance(req, res) {
+ static async maintenance(req, res) {
     try {
       res.render("./index/maintenance");
     } catch (error) {
       res.send(error.message);
     }
-  }
+ }
 
-  static async home(req, res) {
+ static async home(req, res) {
     try {
       let result = await Room.findAll()
       res.render('landingPage', {result})
     } catch (error) {
       res.send(error.message);
     }
-  }
-  static async register(req, res) {
-    // add user
+ }
+
+ static async register(req, res) {
     try {
       let { errors } = req.query;
       if (!errors) {
@@ -32,80 +33,71 @@ class Controller {
         errors = errors.split(",");
       }
 
-          res.render("registForm", {errors});
+      res.render("registForm", {errors});
     } catch (error) {
       res.send(error);
     }
-  }
+ }
 
-  static async registerPost(req, res) {
-    // post add
+ static async registerPost(req, res) {
     try {
+      let { email, password, role } = req.body;
 
-          // let { email, password, role } = req.body;
+      let user = await User.create({
+        email,
+        password,
+        role
+      });
 
-          // let users = await User.findOne({
-          //   where: {
-          //     email: email,
-          //   },
-          // });
+      await Profile.create({
+        name: req.body.name,
+        age: req.body.age,
+        address: req.body.address,
+        phoneNumber: req.body.phoneNumber,
+        UserId: user.id,
+      });
 
-      // if (users) {
-      //   throw { name: "validation", errors: ["Email Already Registered"] };
-      // }
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: "maulana27fandi@gmail.com",
+          pass: "osjk ngak kkep ikfl"
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
 
-          let user = await User.create({
-            email: req.body.email,
-            password: req.body.password,
-            role: req.body.role,
-          });
-    
-          await Profile.create({
-            name: req.body.name,
-            age: req.body.age,
-            address: req.body.address,
-            phoneNumber: req.body.phoneNumber,
-            UserProfileId: user.dataValues.id,
-          });
+      let peran = ''
+      if(role==='1'){
+        peran+='Admin'
+      } else{
+        peran+='User'
+      }
 
-        //   const transporter = nodemailer.createTransport({
-        //     service: 'gmail',
-        //     auth: {
-        //       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-        //       user: "maulana27fandi@gmail.com",
-        //       pass: "osjk ngak kkep ikfl"
-        //     },
-        //   });
-    
-        // // send mail with defined transport object
-        // await transporter.sendMail({
-        //   from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
-        //   to: "muhammadsubhantarmedi@gmail.com", // list of receivers
-        //   subject: "Hello ✔", // Subject line
-        //   text: "Hello world?", // plain text body
-        // })
+      await transporter.sendMail({
+        from: '"Selamat bergabung!!" <maulana27fandi@gmail.com>',
+        to: `${email}`,
+        subject: 'Message from Transylvania Hotel',
+        text: `Terima kasih ${name} dari ${address} sudah bergabung menjadi ${peran} jadi keluarga besar Transylvania Hotel!`,
+      });
+
+      console.log('Email sent successfully');
 
       res.redirect("/login");
     } catch (error) {
-      if (error?.name === "SequelizeValidationError") {
-        error = error.errors.map((item) => {
-          return item.message;
-        });
-        res.redirect(`/register?errors=${error}`);
-      } else {
-        res.send(error);
-      }
+      Helper.setErrors(res, error, "/register");
     }
-  }
+ }
 
-  static async logout(req, res) {
+ static async logout(req, res) {
     try {
       req.session.destroy(function (err) {});
       res.redirect("/");
     } catch (error) {
       Helper.setErrors(res, error, "/login");
     }
-  }
+ }
 }
 
 module.exports = Controller;

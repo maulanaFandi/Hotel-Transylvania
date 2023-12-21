@@ -10,7 +10,6 @@ admin.post('/admin/add', ControllerAdmin.roomAddPost)
 admin.get('/admin/:id/edit', ControllerAdmin.roomIdEdit)
 admin.post('/admin/:id/edit', ControllerAdmin.roomIdEditPost)
 admin.get('/admin/:id/delete', ControllerAdmin.delRoom)
-admin.get('/logout', ControllerAdmin.logoutAdmin)
 
 
 
