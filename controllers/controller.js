@@ -38,7 +38,7 @@ class Controller{
         // post add
         try {
 
-          let { username, password, role } = req.body;
+          let { email, password, role } = req.body;
 
           let users = await User.findOne({
             where: {

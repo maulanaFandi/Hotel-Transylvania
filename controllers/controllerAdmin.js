@@ -17,6 +17,7 @@ class ControllerAdmin {
 
   static async loginAdminPost(req, res) {
     try {
+      console.log(req.body);
       const { email, password } = req.body;
       let data = await User.findOne({
         where: {
@@ -24,14 +25,14 @@ class ControllerAdmin {
         },
       });      
       if (!data) {
-        res.redirect("/login?/err=username invalid");
+        res.redirect("/login?/err=email invalid");
       }
       let user = bcryptjs.compareSync(password, data.password);
       if (user) {
         req.session.role = data.role;
         res.redirect("/admin");
       } else {
-        res.redirect("/login?error=username invalid");
+        res.redirect("/login?error=email invalid");
       }
     } catch (error) {
       res.send(error.message);

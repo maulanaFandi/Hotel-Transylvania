@@ -5,7 +5,7 @@ const user = express.Router();
 user.get('/users', ControllerUser.showAllRooms) // tampilan room  DONE
 user.get('/users/book/:id', ControllerUser.bookRoom) // booking roomDONE
 user.get('/users/login', ControllerUser.loginUser)
-user.post('/users/login/add', ControllerUser.loginUserProcess)
+user.post('/users/login', ControllerUser.loginUserProcess)
 user.get('/users/profile', ControllerUser.showProfile)
 
 

@@ -20,7 +20,7 @@ class ControllerUser {
   static async loginUserProcess(req, res) {
     // post login user
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
       let dataUser = await User.findOne({
         where: {
           email: email,
@@ -36,7 +36,7 @@ class ControllerUser {
         req.session.role = data.role;
         res.render("/users");
       } else {
-        res.redirect("/login?error=username invalid");
+        res.redirect("/login?error=email invalid");
       }
     } catch (error) {
       console.log(error);

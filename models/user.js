@@ -41,15 +41,15 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
       }
   },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate:{
-        notEmpty: {
-          msg: 'Please Enter Your Username'
-        }
-      }
-    },
+    // username: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    //   validate:{
+    //     notEmpty: {
+    //       msg: 'Please Enter Your Username'
+    //     }
+    //   }
+    // },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -67,9 +67,9 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.INTEGER,
     },
-    balance: {
-      type: DataTypes.INTEGER
-  }
+  //   balance: {
+  //     type: DataTypes.INTEGER
+  // }
   }, {
     sequelize,
     modelName: 'User',

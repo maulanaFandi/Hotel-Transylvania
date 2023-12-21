@@ -4,7 +4,7 @@ const admin = express.Router();
 
 admin.get('/admin', ControllerAdmin.adminPage)
 admin.get('/admin/login', ControllerAdmin.loginAdmin)
-admin.post('/admin/login/add', ControllerAdmin.loginAdminPost)
+admin.post('/admin/login', ControllerAdmin.loginAdminPost)
 admin.get('/admin/add', ControllerAdmin.roomAdd)
 admin.post('/admin/add', ControllerAdmin.roomAddPost)
 admin.get('/admin/:id/edit', ControllerAdmin.roomIdEdit)
