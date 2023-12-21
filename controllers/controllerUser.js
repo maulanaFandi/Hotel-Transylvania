@@ -48,7 +48,6 @@ class ControllerUser {
   static async showAllRooms(req, res) {
     // menampilkan semua rooms
     try {
-      console.log(`ini adalah session ${req.session.role}`);
       const result = await Room.findAll({
         where: {
           StatusId: 2,

@@ -22,26 +22,25 @@ class Controller {
       res.send(error.message);
     }
   }
-    
-    static async register(req, res) {
-        // add user
-        try {
-          let { errors } = req.query;
-          if (!errors) {
-            errors = [];
-          } else {
-            errors = errors.split(",");
-          }
-          
-              res.render("registForm", {errors});
-        } catch (error) {
-          res.send(error);
-        }
+  static async register(req, res) {
+    // add user
+    try {
+      let { errors } = req.query;
+      if (!errors) {
+        errors = [];
+      } else {
+        errors = errors.split(",");
       }
-    
-      static async registerPost(req, res) {
-        // post add
-        try {
+
+          res.render("registForm", {errors});
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async registerPost(req, res) {
+    // post add
+    try {
 
           // let { email, password, role } = req.body;
 
