@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const user = require("../models/user");
 const admin = require("../routers/admin");
 const bcryptjs = require("bcryptjs");
-const rupiah = require("../helpers/helper");
+const Helper = require("../helpers/helper");
 
 class ControllerUser {
 
@@ -55,7 +55,7 @@ class ControllerUser {
         order: [["id", "ASC"]],
       });
       // console.log(result);
-      res.render("userPage", { rupiah, result });
+      res.render("userPage", { result });
     } catch (error) {
       console.log(error);
       res.send(error);

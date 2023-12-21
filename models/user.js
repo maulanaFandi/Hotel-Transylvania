@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const {
   Model
 } = require('sequelize');
+const Helper = require('../helpers/helper');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -17,12 +18,31 @@ module.exports = (sequelize, DataTypes) => {
       //   as: "IdUser"
       // })
       // define association here
+      // User.hasMany(models.Transaction, {
+      //   foreignKey: "UserId"
+      // })
+
+      User.belongsTo(models.Profile)
     }
+
+    get balanceRupiahFormat() {
+      return Helper.currencyFormat(this.balance);
+  }
+
   }
   User.init({
-    username: {
+    email: {
       type: DataTypes.STRING,
       unique: true,
+      validate: {
+          notEmpty: {
+              msg: 'Please enter your Email'
+          },
+          isEmail: true
+      }
+  },
+    username: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate:{
         notEmpty: {
@@ -35,30 +55,31 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate:{
         notEmpty: {
-          msg: 'Please Enter Your Password'
+            msg: 'Please enter your Password'
+        },
+        validatePasswordMin(value) {
+            if (value.length < 8) {
+                throw "Minimum Length Password is 8";
+            }
         }
-      }
+    }
     },
     role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate:{
-        notEmpty: {
-          msg: 'Role Cannot Be Null'
-        }
-      }
-    }
-  }, {
-    hooks:{
-      beforeCreate(instance,option){
-        const salt = bcrypt.genSaltSync(10)
-        const hash = bcrypt.hashSync(instance.password, salt)
-        instance.password=hash
-      },
-      afterCreate(instance,option){}
+      type: DataTypes.INTEGER,
     },
+    balance: {
+      type: DataTypes.INTEGER
+  }
+  }, {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeCreate(async (user, options) => {
+    user.password = Helper.generatePassword(user.password);
+    user.role = 2;
+    user.balance = 0;
+});
+
   return User;
 };

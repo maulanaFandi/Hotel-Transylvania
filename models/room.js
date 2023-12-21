@@ -5,15 +5,17 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
     
-    get rupiah() {
-      return rupiah.formatCurrency(this.price);
-    }
+    // get rupiah() {
+    //   return rupiah.formatCurrency(this.price);
+    // }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // Room.hasMany(models.Transaction)
+
       Room.belongsTo(models.Status)
       
       Room.belongsToMany(models.Room, {
@@ -21,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "RoomId",
         as: "IdRoom"
       })
+
       // define association here
     }
   }

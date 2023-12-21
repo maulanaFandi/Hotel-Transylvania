@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     age: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
       allowNull: false,
       validate:{
         notEmpty: true
@@ -50,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Please Enter Your Phone Number'
         }
       }
+    },
+    UserProfileId: {
+      type: DataTypes.INTEGER
     }
 
     

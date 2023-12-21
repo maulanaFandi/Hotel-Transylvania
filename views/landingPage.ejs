@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AriTsan</title>
+    <title>Hotel Transylvania</title>
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <!--Fontawesome-->
@@ -18,7 +18,7 @@
     <!--Jumbotron-->
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4">Welcome to Our Website</h1>
+            <h1 class="display-4">Welcome to Hotel Transylvania</h1>
             <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
             <hr class="my-4">
             <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
@@ -29,36 +29,21 @@
     <!--Cards-->
     <div class="container">
         <div class="row">
+            <% result.forEach(element => { %>
             <div class="col-md-4">
+                 
                 <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+                    <img src="<%= element.imgUrl %>" class="card-img-top" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
+                        <h5 class="card-title">Room: <%= element.roomNumber %></h5>
+                        <p class="card-text">Price: <%= element.price %></p>
+                        <p class="card-text">Type: <%= element.roomType %></p>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a href="/register" class="btn btn-primary">Booking Now</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
+            <% }) %>
         </div>
     </div>
 

@@ -7,9 +7,7 @@ const Controller = require('../controllers/controller');
 router.use(user)
 router.use(admin)
 
-router.get("/", (req, res) => {
-    res.render("landingPage");
-  });
+router.get("/", Controller.home);
 
   router.get("/login", (req, res) => {
     res.render("loginPage");
@@ -19,8 +17,9 @@ router.get("/", (req, res) => {
     res.render("registForm");
   });
 
-router.get('/admin/register', Controller.register)
-router.get('/admin/register', Controller.registerPost)
+  router.get('/404', Controller.maintenance)
+
+router.get('/register', Controller.registerPost)
 
 
 module.exports = router
