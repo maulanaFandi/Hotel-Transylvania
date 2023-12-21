@@ -5,7 +5,9 @@ const admin = require("../routers/admin");
 const bcryptjs = require("bcryptjs");
 const Helper = require("../helpers/helper");
 
-class Controller{
+const nodemailer = require('nodemailer');
+
+class Controller {
 
   static async maintenance(req, res) {
     try {
@@ -15,81 +17,98 @@ class Controller{
     }
   }
 
-  static async home(req, res){
+  static async home(req, res) {
     try {
       console.log(req.session.role);
       let result = await Room.findAll()
-      res.render('landingPage', {result})
+      res.render('landingPage', { result })
     } catch (error) {
       res.send(error.message)
     }
   }
-    
-    static async register(req, res) {
-        // add user
+
+  static async register(req, res) {
+    // add user
+    try {
+      let errors = Helper.getErrors(req.query);
+      res.render("registForm", { errors });
+    } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async registerPost(req, res) {
+    // post add
+    try {
+
+      let { email, password, name, address, role } = req.body;
+      console.log(req.body);
+      // let users = await User.findOne({
+      //   where: {
+      //     email: email,
+      //   },
+      // });
+
+      let users = await User.findOne();
+      console.log(req.body);
+      // if (users) {
+      //   throw { name: "validation", errors: ["Email Already Registered"] };
+      // }
+
+      let user = await User.create({
+        email,
+        password,
+        role
+      });
+
+      await Profile.create({
+        name: req.body.name,
+        age: req.body.age,
+        address: req.body.address,
+        phoneNumber: req.body.phoneNumber,
+        UserId: user.id,
+      });
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: "maulana27fandi@gmail.com",
+          pass: "osjk ngak kkep ikfl"
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
+
+      let peran = ''
+      if (role === '1') {
+        peran += 'Admin'
+      } else {
+        peran += 'User'
+      }
+
+      async function sendEmail() {
         try {
-        let errors = Helper.getErrors(req.query);
-          res.render("registForm", {errors});
+          await transporter.sendMail({
+            from: '"Selamat bergabung!!" <maulana27fandi@gmail.com>',
+            // to: 'curvy_emo41@yahoo.com',
+            to: `${email}`,
+            subject: 'Message from Transylvania Hotel',
+            text: `Terima kasih ${name} dari ${address} sudah bergabung menjadi ${peran} jadi keluarga besar Transylvania Hotel!`,
+          });
+          console.log('Email sent successfully');
         } catch (error) {
-          res.send(error);
+          console.error('Error sending email:', error);
         }
       }
-    
-      static async registerPost(req, res) {
-        // post add
-        try {
+      sendEmail();
 
-          let { email, password, role } = req.body;
-          console.log(req.body);
-          // let users = await User.findOne({
-          //   where: {
-          //     email: email,
-          //   },
-          // });
-
-          let users = await User.findOne();
-          console.log(req.body);
-          // if (users) {
-          //   throw { name: "validation", errors: ["Email Already Registered"] };
-          // }
-
-          let user = await User.create({
-            email,
-            password,
-            role
-          });
-
-          await Profile.create({
-            name: req.body.name,
-            age: req.body.age,
-            address: req.body.address,
-            phoneNumber: req.body.phoneNumber,
-            UserId: user.id,
-          });
-
-          // const transporter = nodemailer.createTransport({
-          //   service: 'gmail',
-          //   auth: {
-          //     // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-          //     user: "maulana27fandi@gmail.com",
-          //     pass: "osjk ngak kkep ikfl"
-          //   },
-          // });
-    
-        // send mail with defined transport object
-        // await transporter.sendMail({
-        //   from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
-        //   to: "muhammadsubhantarmedi@gmail.com", // list of receivers
-        //   subject: "Hello ✔", // Subject line
-        //   text: "Hello world?", // plain text body
-        // })
-
-          res.redirect("/login");
-        } catch (error) {
-          console.log(error);
-          res.send(error);
-        }
-      }
+      res.redirect("/login");
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
 }
 
 module.exports = Controller

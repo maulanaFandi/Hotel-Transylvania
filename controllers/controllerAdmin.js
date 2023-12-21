@@ -41,9 +41,14 @@ class ControllerAdmin {
 
   static async adminPage(req, res) {
     try {
-      if(req.session.role!=='1'){
-        res.redirect('/users')
-      }
+      // if(req.session.role==='2'){
+      //   res.redirect('/users')
+      // }else if
+      // (req.session.role==='1'){
+      //   res.redirect('/admin')
+      // }else{
+      //   res.redirect('/')
+      // }
       let {search} = req.query
       let where = {};
       
