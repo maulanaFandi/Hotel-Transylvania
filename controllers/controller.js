@@ -48,7 +48,7 @@ class Controller{
           // });
 
           let users = await User.findOne();
-          console.log(users);
+          console.log(req.body);
           // if (users) {
           //   throw { name: "validation", errors: ["Email Already Registered"] };
           // }
@@ -59,8 +59,6 @@ class Controller{
             role
           });
 
-          console.log(user);
-    
           await Profile.create({
             name: req.body.name,
             age: req.body.age,

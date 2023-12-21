@@ -23,7 +23,7 @@ class ControllerAdmin {
         where: {
           email: email,
         },
-      });      
+      });  
       if (!data) {
         res.redirect("/login?/err=email invalid");
       }
@@ -41,7 +41,7 @@ class ControllerAdmin {
 
   static async adminPage(req, res) {
     try {
-      if(req.session.role!==1){
+      if(req.session.role!=='1'){
         res.redirect('/users')
       }
       let {search} = req.query

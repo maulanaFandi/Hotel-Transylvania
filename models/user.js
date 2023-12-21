@@ -79,8 +79,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeCreate(async (user, options) => {
     user.password = Helper.generatePassword(user.password);
-    user.role = 2;
-    user.balance = 0;
+    // user.role = 2;
+    // user.balance = 0;
 });
 
   return User;
