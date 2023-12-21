@@ -28,8 +28,14 @@ class Controller{
     static async register(req, res) {
         // add user
         try {
-        let errors = Helper.getErrors(req.query);
-          res.render("registForm", {errors});
+          let { errors } = req.query;
+          if (!errors) {
+            errors = [];
+          } else {
+            errors = errors.split(",");
+          }
+          
+              res.render("registForm", {errors});
         } catch (error) {
           res.send(error);
         }
@@ -49,14 +55,15 @@ class Controller{
 
           let users = await User.findOne();
           console.log(req.body);
+
           // if (users) {
           //   throw { name: "validation", errors: ["Email Already Registered"] };
           // }
 
           let user = await User.create({
-            email,
-            password,
-            role
+            email: req.body.email,
+            password: req.body.password,
+            role: req.body.role,
           });
 
           await Profile.create({
@@ -77,6 +84,7 @@ class Controller{
           // });
     
         // send mail with defined transport object
+
         // await transporter.sendMail({
         //   from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
         //   to: "muhammadsubhantarmedi@gmail.com", // list of receivers
@@ -86,10 +94,25 @@ class Controller{
 
           res.redirect("/login");
         } catch (error) {
-          console.log(error);
-          res.send(error);
+          if (error?.name === "SequelizeValidationError") {
+            error = error.errors.map((item) => {
+              return item.message;
+            });
+            res.redirect(`/register?errors=${error}`);
+          } else {
+            res.send(error);
+          }        }
+      }
+
+      static async logout(req, res) {
+        try {
+          req.session.destroy(function (err) {});
+          res.redirect("/");
+        } catch (error) {
+          Helper.setErrors(res, error, "/login");
         }
       }
 }
 
 module.exports = Controller
+

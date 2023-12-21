@@ -9,7 +9,8 @@ class ControllerAdmin {
 
   static async loginAdmin(req, res) {
     try {
-      res.render("loginFormAdmin");
+      let errors = Helper.getErrors(req.query)
+      res.render("loginFormAdmin", {errors});
     } catch (error) {
       res.send(error.message);
     }
@@ -17,7 +18,6 @@ class ControllerAdmin {
 
   static async loginAdminPost(req, res) {
     try {
-      console.log(req.body);
       const { email, password } = req.body;
       let data = await User.findOne({
         where: {
@@ -35,6 +35,7 @@ class ControllerAdmin {
         res.redirect("/login?error=email invalid");
       }
     } catch (error) {
+      Helper.setErrors(res, error, "/login");
       res.send(error.message);
     }
   }
@@ -44,6 +45,7 @@ class ControllerAdmin {
       if(req.session.role!=='1'){
         res.redirect('/users')
       }
+
       let {search} = req.query
       let where = {};
       
@@ -58,7 +60,7 @@ class ControllerAdmin {
             ['roomNumber', 'ASC'],
         ]
       });
-      res.render("adminPage", { result });
+      res.render("adminPage", { result, errors });
     } catch (error) {
       res.send(error.message);
     }
@@ -67,7 +69,8 @@ class ControllerAdmin {
   static async roomAdd(req, res) {
     // room id
     try {
-        res.render("addRoom")
+      let errors = Helper.getErrors(req.query);
+        res.render("addRoom", {errors})
     } catch (error) {
       res.send(error.message);
     }
@@ -84,6 +87,7 @@ class ControllerAdmin {
         })
       res.redirect("/admin");
     } catch (error) {
+      Helper.setErrors(res, error, "/admin/add" )
       res.send(error.message);
     }
   }
@@ -91,13 +95,14 @@ class ControllerAdmin {
   static async roomIdEdit(req, res) {
     // room i edit
     try {
+      let errors = Helper.getErrors(req.query);
       const { id } = req.params;
       let result = await Room.findOne({
         where: {
           id
         },
       });
-      res.render("editRoom", { result });
+      res.render("editRoom", { result, errors });
     } catch (error) {
       res.send(error.message);
     }
@@ -115,6 +120,7 @@ class ControllerAdmin {
         },{where: {id}})
       res.redirect("/admin");
     } catch (error) {
+      Helper.setErrors(res, error, "/admin/edit")
       res.send(error.message);
     }
   }
@@ -123,7 +129,7 @@ class ControllerAdmin {
     //delete
     try {
       const { id } = req.params;
-      const data = await Room.destroy({ where: { id } });
+      await Room.destroy({ where: { id } });
       res.redirect("/admin");
     } catch (error) {
       res.send(error.message);
