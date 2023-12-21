@@ -68,22 +68,22 @@ class Controller{
             UserId: user.id,
           });
 
-          const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-              user: "maulana27fandi@gmail.com",
-              pass: "osjk ngak kkep ikfl"
-            },
-          });
+          // const transporter = nodemailer.createTransport({
+          //   service: 'gmail',
+          //   auth: {
+          //     // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+          //     user: "maulana27fandi@gmail.com",
+          //     pass: "osjk ngak kkep ikfl"
+          //   },
+          // });
     
         // send mail with defined transport object
-        await transporter.sendMail({
-          from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
-          to: "muhammadsubhantarmedi@gmail.com", // list of receivers
-          subject: "Hello ✔", // Subject line
-          text: "Hello world?", // plain text body
-        })
+        // await transporter.sendMail({
+        //   from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
+        //   to: "muhammadsubhantarmedi@gmail.com", // list of receivers
+        //   subject: "Hello ✔", // Subject line
+        //   text: "Hello world?", // plain text body
+        // })
 
           res.redirect("/login");
         } catch (error) {
