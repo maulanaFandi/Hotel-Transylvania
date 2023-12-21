@@ -27,8 +27,14 @@ class Controller{
     static async register(req, res) {
         // add user
         try {
-        let errors = Helper.getErrors(req.query);
-          res.render("registForm", {errors});
+          let { errors } = req.query;
+          if (!errors) {
+            errors = [];
+          } else {
+            errors = errors.split(",");
+          }
+          
+              res.render("registForm", {errors});
         } catch (error) {
           res.send(error);
         }
@@ -83,8 +89,14 @@ class Controller{
 
           res.redirect("/login");
         } catch (error) {
-      Helper.setErrors(res, error, "/register");
-        }
+          if (error?.name === "SequelizeValidationError") {
+            error = error.errors.map((item) => {
+              return item.message;
+            });
+            res.redirect(`/register?errors=${error}`);
+          } else {
+            res.send(error);
+          }        }
       }
 
       static async logout(req, res) {
@@ -98,3 +110,4 @@ class Controller{
 }
 
 module.exports = Controller
+
