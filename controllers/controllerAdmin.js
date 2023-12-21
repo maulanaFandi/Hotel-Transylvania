@@ -17,12 +17,12 @@ class ControllerAdmin {
 
   static async loginAdminPost(req, res) {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
       let data = await User.findOne({
         where: {
-          username: username,
+          email: email,
         },
-      });
+      });      
       if (!data) {
         res.redirect("/login?/err=username invalid");
       }

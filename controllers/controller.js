@@ -42,7 +42,7 @@ class Controller{
 
           let users = await User.findOne({
             where: {
-              username: username,
+              email: email,
             },
           });
     
@@ -51,7 +51,7 @@ class Controller{
           }
 
           let user = await User.create({
-            username,
+            email,
             password,
             role
           });

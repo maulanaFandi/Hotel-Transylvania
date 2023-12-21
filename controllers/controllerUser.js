@@ -23,7 +23,7 @@ class ControllerUser {
       const { username, password } = req.body;
       let dataUser = await User.findOne({
         where: {
-          username: username,
+          email: email,
         },
       });
 
@@ -47,14 +47,12 @@ class ControllerUser {
   static async showAllRooms(req, res) {
     // menampilkan semua rooms
     try {
-      // console.log("masuk");
       const result = await Room.findAll({
         where: {
           StatusId: 2,
         },
         order: [["id", "ASC"]],
       });
-      // console.log(result);
       res.render("userPage", { result });
     } catch (error) {
       console.log(error);
@@ -73,8 +71,7 @@ class ControllerUser {
           id: id,
         },
       });
-      //   console.log(room);
-      //   console.log(id, "<<<");
+
       if (!room) {
         return res.status(404).send("Room not found");
       }
@@ -92,22 +89,8 @@ class ControllerUser {
 
   static async showProfile(req, res) {
     try {
-      let data = await Profile.findAll();
-      let dataProfile = await User.create({
-        username: req.body.username,
-        password: req.body.password,
-        role: req.body.role,
-      });
-
-      await Profile.create({
-        name: req.body.name,
-        age: req.body.age,
-        address: req.body.address,
-        phoneNumber: req.body.phoneNumber,
-        UserProfileId: user.dataValues.id,
-      });
-
-      res.render("profile", { data, dataProfile });
+      let result = await Profile.findAll();
+      res.render("userProfile", { result });
     } catch (error) {
       console.log(error);
       res.send(error);
