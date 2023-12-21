@@ -89,7 +89,7 @@ class ControllerAdmin {
         })
       res.redirect("/admin");
     } catch (error) {
-      res.send(error.message);
+      res.send(error);
     }
   }
 
