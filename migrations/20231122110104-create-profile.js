@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       age: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATE,
       },
       address: {
         type: Sequelize.STRING,
@@ -24,7 +24,7 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING,
       },
-      UserProfileId: {
+      UserId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Users",

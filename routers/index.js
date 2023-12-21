@@ -19,6 +19,6 @@ router.get("/register", (req, res) => {
 
 router.get("/404", Controller.maintenance);
 
-router.get("/register", Controller.registerPost);
+router.post("/register", Controller.registerPost);
 
 module.exports = router;

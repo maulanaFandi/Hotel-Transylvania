@@ -39,29 +39,33 @@ class Controller{
         try {
 
           let { email, password, role } = req.body;
+          console.log(req.body);
+          // let users = await User.findOne({
+          //   where: {
+          //     email: email,
+          //   },
+          // });
 
-          let users = await User.findOne({
-            where: {
-              email: email,
-            },
-          });
-    
-          if (users) {
-            throw { name: "validation", errors: ["Email Already Registered"] };
-          }
+          let users = await User.findOne();
+          console.log(users);
+          // if (users) {
+          //   throw { name: "validation", errors: ["Email Already Registered"] };
+          // }
 
           let user = await User.create({
             email,
             password,
             role
           });
+
+          console.log(user);
     
           await Profile.create({
             name: req.body.name,
             age: req.body.age,
             address: req.body.address,
             phoneNumber: req.body.phoneNumber,
-            UserProfileId: user.dataValues.id,
+            UserId: user.id,
           });
 
           const transporter = nodemailer.createTransport({

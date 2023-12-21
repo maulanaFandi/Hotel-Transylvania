@@ -22,9 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: "UserId"
       // })
 
-      User.belongsTo(models.Profile)
+      // User.belongsTo(models.Profile)
+      User.hasMany(models.Profile, {
+        foreignKey: "UserId"
+    })
     }
-
     get balanceRupiahFormat() {
       return Helper.currencyFormat(this.balance);
   }
