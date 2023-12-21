@@ -38,22 +38,22 @@ class Controller{
         // post add
         try {
 
-          let { email, password, role } = req.body;
+          // let { email, password, role } = req.body;
 
-          let users = await User.findOne({
-            where: {
-              email: email,
-            },
-          });
-    
-          if (users) {
-            throw { name: "validation", errors: ["Email Already Registered"] };
-          }
+          // let users = await User.findOne({
+          //   where: {
+          //     email: email,
+          //   },
+          // });
+
+          // if (users) {
+          //   throw { name: "validation", errors: ["Email Already Registered"] };
+          // }
 
           let user = await User.create({
-            email,
-            password,
-            role
+            email: req.body.email,
+            password: req.body.password,
+            role: req.body.role,
           });
     
           await Profile.create({
@@ -64,27 +64,35 @@ class Controller{
             UserProfileId: user.dataValues.id,
           });
 
-          const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-              user: "maulana27fandi@gmail.com",
-              pass: "osjk ngak kkep ikfl"
-            },
-          });
+        //   const transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+        //       user: "maulana27fandi@gmail.com",
+        //       pass: "osjk ngak kkep ikfl"
+        //     },
+        //   });
     
-        // send mail with defined transport object
-        await transporter.sendMail({
-          from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
-          to: "muhammadsubhantarmedi@gmail.com", // list of receivers
-          subject: "Hello ✔", // Subject line
-          text: "Hello world?", // plain text body
-        })
+        // // send mail with defined transport object
+        // await transporter.sendMail({
+        //   from: '"Foo Foo 👻" <maulana27fandi@gmail.com>', // sender address
+        //   to: "muhammadsubhantarmedi@gmail.com", // list of receivers
+        //   subject: "Hello ✔", // Subject line
+        //   text: "Hello world?", // plain text body
+        // })
 
           res.redirect("/login");
         } catch (error) {
-          console.log(error);
-          res.send(error);
+      Helper.setErrors(res, error, "/register");
+        }
+      }
+
+      static async logout(req, res) {
+        try {
+          req.session.destroy(function (err) {});
+          res.redirect("/");
+        } catch (error) {
+          Helper.setErrors(res, error, "/login");
         }
       }
 }

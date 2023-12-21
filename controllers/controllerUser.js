@@ -28,12 +28,12 @@ class ControllerUser {
       });
 
       if (!dataUser) {
-        res.redirect("/login?error=username invalid");
+        res.redirect("/login?error=email invalid");
       }
 
       let user = bcryptjs.compareSync(password, data.password);
       if (user) {
-        req.session.role = data.role;
+        req.session.role = dataUser.role;
         res.render("/users");
       } else {
         res.redirect("/login?error=email invalid");
