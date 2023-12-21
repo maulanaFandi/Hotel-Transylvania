@@ -17,6 +17,7 @@ class Controller{
 
   static async home(req, res){
     try {
+      console.log(req.session.role);
       let result = await Room.findAll()
       res.render('landingPage', {result})
     } catch (error) {

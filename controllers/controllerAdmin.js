@@ -41,6 +41,9 @@ class ControllerAdmin {
 
   static async adminPage(req, res) {
     try {
+      if(req.session.role!==1){
+        res.redirect('/users')
+      }
       let {search} = req.query
       let where = {};
       
@@ -129,6 +132,7 @@ class ControllerAdmin {
 
   static async logoutAdmin(req, res){
     try {
+      console.log(`ini adalah session ${req.session.role}`);
         req.session.destroy((err) => {
             if (err){
                 console.log(err)
