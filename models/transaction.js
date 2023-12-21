@@ -22,16 +22,16 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.init({
     RoomId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate:{
-        notEmpty: true
+      references: {
+        model: "Room",
+        key: "id"
       }
     },
     UserId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate:{
-        notEmpty: true
+      references: {
+        model: "Room",
+        key: "id"
       }
     }
   }, {
