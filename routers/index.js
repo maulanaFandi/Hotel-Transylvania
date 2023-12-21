@@ -16,9 +16,9 @@ router.get("/login", (req, res) => {
 router.get("/register", (req, res) => {
   res.render("registForm");
 });
+router.post("/register", Controller.registerPost);
 
 router.get("/404", Controller.maintenance);
 
-router.get("/register", Controller.registerPost);
 
 module.exports = router;

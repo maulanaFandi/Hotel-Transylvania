@@ -9,7 +9,8 @@ class ControllerAdmin {
 
   static async loginAdmin(req, res) {
     try {
-      res.render("loginFormAdmin");
+      let errors = Helper.getErrors(req.query)
+      res.render("loginFormAdmin", {errors});
     } catch (error) {
       res.send(error.message);
     }
@@ -17,7 +18,6 @@ class ControllerAdmin {
 
   static async loginAdminPost(req, res) {
     try {
-      console.log(req.body);
       const { email, password } = req.body;
       let data = await User.findOne({
         where: {
